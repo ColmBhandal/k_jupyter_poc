@@ -1,7 +1,10 @@
 from ipykernel.kernelbase import Kernel
+import re
 
 # TODO: Inject version in one place only
 __version__ = '0.0.0'
+
+k_code_pattern = re.compile("(?s).*module(?s).*endmodule(?s).*")
 
 class KKernel(Kernel):
     implementation = 'k'
@@ -23,8 +26,11 @@ class KKernel(Kernel):
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=False):
+        message = 'No k code detected'
+        if re.match(k_code_pattern, code):
+            message = 'K code detected'
         if not silent:
-            stream_content = {'name': 'stdout', 'text': code}
+            stream_content = {'name': 'stdout', 'text': message}
             self.send_response(self.iopub_socket, 'stream', stream_content)
 
         return {'status': 'ok',
