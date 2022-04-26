@@ -1,4 +1,4 @@
-all: uninstall clean
+all: clean
 	pip install .
 	sudo python3 -m k_jupyter_poc.install
 
