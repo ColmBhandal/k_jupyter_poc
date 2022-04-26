@@ -9,7 +9,7 @@ setup(name='k_jupyter_poc',
       classifiers=[
           'License :: OSI Approved :: MIT License',
       ],
-      url='https://github.com/ColmBhandal/k-jupyter-poc',
+      url='https://github.com/ColmBhandal/k_jupyter_poc',
       packages=['k_jupyter_poc'],
       keywords=['jupyter', 'notebook', 'kernel', 'k'],
       include_package_data=True
