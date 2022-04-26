@@ -7,12 +7,15 @@ import os
 # TODO: Inject version in one place only
 __version__ = '0.0.0'
 
-k_code_pattern = re.compile("^//k")
+k_code_pattern = re.compile("^//k\n")
 
 def kompile_and_run(k_buffer, code):
+    k_def = "\n".join(k_buffer)
     with tempfile.TemporaryDirectory() as tmpdirname:
         os.chmod(tmpdirname, 0o755) # Starts off as 700, not user readable
-    return "K: " + "\n".join(k_buffer) + "\nCode: " + code
+        with open
+            kompile_output = subprocess.run(['kompile', '--version'], check=True, capture_output=True, text=True).stdout
+    return "K: " +  + "\nCode: " + code
 
 class KKernel(Kernel):
 
@@ -42,12 +45,12 @@ class KKernel(Kernel):
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=False):
         if re.match(k_code_pattern, code):
-            self._k_buffer.append(code)
+            # TODO: Less hacky way of removing the //k\n prefix than just indexing the string at [4:]
+            self._k_buffer.append(code[4:])
             message = 'K code fragment buffered.\n'
         else:
             message = kompile_and_run(self._k_buffer, code)
         if not silent:
-            message += subprocess.run(['kompile', '--version'], check=True, capture_output=True, text=True).stdout
             stream_content = {'name': 'stdout', 'text': message}
             self.send_response(self.iopub_socket, 'stream', stream_content)
 
