@@ -1,4 +1,5 @@
 from ipykernel.kernelbase import Kernel
+import subprocess
 import re
 
 # TODO: Inject version in one place only
@@ -26,10 +27,11 @@ class KKernel(Kernel):
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=False):
-        message = 'No k code detected'
+        message = 'No k code detected\n'
         if re.match(k_code_pattern, code):
-            message = 'K code detected'
+            message = 'K code detected\n'
         if not silent:
+            message += subprocess.run(['kompile', '--version'], check=True, capture_output=True, text=True).stdout
             stream_content = {'name': 'stdout', 'text': message}
             self.send_response(self.iopub_socket, 'stream', stream_content)
 
