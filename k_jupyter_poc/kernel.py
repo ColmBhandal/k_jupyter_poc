@@ -7,6 +7,8 @@ class KKernel(Kernel):
     implementation = 'k'
     implementation_version = __version__
     language = 'k'
+    # TODO: Get the actual K language version somehow and inject it here, or at least hardwire the version being used
+    language_version = '0.0.0'
     banner = "K kernel.\n" \
              "Saves K modules in the background and allows them to be Kompiled / KRun"
 

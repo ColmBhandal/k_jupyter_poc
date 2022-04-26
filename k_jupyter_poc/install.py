@@ -13,7 +13,7 @@ kernel_json = {
     "argv": [
         "python3",
         "-m",
-        "jupyter_k_kernel",
+        "k_jupyter_poc",
         "-f",
         "{connection_file}"
     ],
@@ -29,7 +29,7 @@ def install_K_kernel_spec(user=True, prefix=None):
             json.dump(kernel_json, jsonFile, sort_keys=True)
 
         print('Installing the K IPython kernel')
-        KernelSpecManager().install_kernel_spec(tempDir, 'k', user=user, replace=True, prefix=prefix)
+        KernelSpecManager().install_kernel_spec(tempDir, 'k', user=user, prefix=prefix)
 
 
 def _is_root():
