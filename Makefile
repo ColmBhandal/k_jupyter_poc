@@ -1,6 +1,6 @@
-all: clean
+install-local:
 	pip install .
-	sudo python3 -m k_jupyter_poc.install
+	python3 -m k_jupyter_poc.install --user
 
 uninstall:
 	jupyter kernelspec uninstall k
