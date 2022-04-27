@@ -42,8 +42,10 @@ class KKernel(Kernel):
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=False):
         if re.match(command_pattern, code):
+            self.maybe_send_simple_message("Running command...\n", silent)
             message = self._run_command(code)
         elif match := re.search(kompile_pattern, code):
+            self.maybe_send_simple_message("Kompiling code...\n", silent)
             k_def = "\n".join(self._k_buffer)
             # We've already done the work of joining - so store the joined string in the buffer
             self._k_buffer = [k_def]
@@ -56,9 +58,8 @@ class KKernel(Kernel):
         else:
             self._k_buffer.append(code)
             message = 'K code fragment buffered.\n'
-        if not silent:
-            stream_content = {'name': 'stdout', 'text': message}
-            self.send_response(self.iopub_socket, 'stream', stream_content)
+
+        self.maybe_send_simple_message(message, silent)
 
         return {'status': 'ok',
                 # The base class increments the execution count
@@ -66,6 +67,11 @@ class KKernel(Kernel):
                 'payload': [],
                 'user_expressions': {},
                }
+
+    def maybe_send_simple_message(self, message, silent):
+        if not silent:
+            stream_content = {'name': 'stdout', 'text': message}
+            self.send_response(self.iopub_socket, 'stream', stream_content)
 
     def _run_command(self, k_command):
         output = subprocess.run(shlex.split(k_command), check=True, capture_output=True, text=True, cwd=self._workdir).stdout
