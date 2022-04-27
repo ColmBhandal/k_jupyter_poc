@@ -11,7 +11,7 @@ __version__ = '0.0.0'
 
 kommand_pattern = re.compile(r"^(krun|kparse)")
 kompile_pattern = re.compile(r"^kompile\s*([\-\w\d]+\.\w+)")
-kode_pattern = re.compile(r"^//code-file:\s*([^\s]+)\s*([\s\S]+)")
+kode_pattern = re.compile(r"^//kode-file:\s*([^\s]+)\s*([\s\S]+)")
 
 class KKernel(Kernel):
 
@@ -63,7 +63,11 @@ class KKernel(Kernel):
             if(output.strip()):
                 message += "\n" + output
         elif match := re.search(kode_pattern, code):
-            message = "Code detected!"
+            kode_filename = match.group(1)
+            kode = match.group(2)
+            with open(os.path.join(self._workdir, kode_filename), 'w') as kode_file:
+                kode_file.write(kode)
+            message = f"Saved kode to file {kode_filename}"
         else:
             self._k_buffer.append(code)
             message = 'K code fragment buffered.\n'
