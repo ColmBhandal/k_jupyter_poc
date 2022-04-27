@@ -7,14 +7,15 @@ import os
 # TODO: Inject version in one place only
 __version__ = '0.0.0'
 
-k_code_pattern = re.compile("^//k\n")
+kompile_pattern = re.compile(r"^kompile.*(\w+\.\w+)")
+command_pattern = re.compile("^(krun|kparse)")
 
-def kompile_and_run(k_buffer, code):
-    k_def = "\n".join(k_buffer)
+def kompile_and_run(k_def, code, k_filename):
     with tempfile.TemporaryDirectory() as tmpdirname:
         os.chmod(tmpdirname, 0o755) # Starts off as 700, not user readable
-        with open
-            kompile_output = subprocess.run(['kompile', '--version'], check=True, capture_output=True, text=True).stdout
+        with open(k_filename, 'w') as k_file:
+            k_file.write(code)
+        kompile_output = subprocess.run(['kompile', '--version'], check=True, capture_output=True, text=True).stdout
     return "K: " +  + "\nCode: " + code
 
 class KKernel(Kernel):
@@ -44,12 +45,17 @@ class KKernel(Kernel):
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=False):
-        if re.match(k_code_pattern, code):
-            # TODO: Less hacky way of removing the //k\n prefix than just indexing the string at [4:]
-            self._k_buffer.append(code[4:])
-            message = 'K code fragment buffered.\n'
+        if re.match(command_pattern, code):
+            k_def = "\n".join(self._k_buffer)
+            # We've already done the work of joining - so store the joined string in the buffer
+            self._k_buffer = [k_def]
+            message = kompile_and_run(k_def, code, self._k_filename)
+        elif match = re.search(kompile_pattern, code):
+            self._k_filename = match.group(1)
+            message = f'Buffered Kompile step. K code will go to file: {self._k_filename}'
         else:
-            message = kompile_and_run(self._k_buffer, code)
+            self._k_buffer.append(code)
+            message = 'K code fragment buffered.\n'
         if not silent:
             stream_content = {'name': 'stdout', 'text': message}
             self.send_response(self.iopub_socket, 'stream', stream_content)
