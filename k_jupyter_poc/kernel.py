@@ -51,6 +51,8 @@ class KKernel(Kernel):
             with open(os.path.join(self._workdir, k_filename), 'w') as k_file:
                 k_file.write(k_def)
             message = self._run_command(code)
+            if(message.isspace()):
+                message = "Kompile complete"
         else:
             self._k_buffer.append(code)
             message = 'K code fragment buffered.\n'
