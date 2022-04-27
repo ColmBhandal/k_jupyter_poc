@@ -50,7 +50,7 @@ class KKernel(Kernel):
             # We've already done the work of joining - so store the joined string in the buffer
             self._k_buffer = [k_def]
             message = kompile_and_run(k_def, code, self._k_filename)
-        elif match = re.search(kompile_pattern, code):
+        elif match := re.search(kompile_pattern, code):
             self._k_filename = match.group(1)
             message = f'Buffered Kompile step. K code will go to file: {self._k_filename}'
         else:
