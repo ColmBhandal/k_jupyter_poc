@@ -7,7 +7,7 @@ import os
 # TODO: Inject version in one place only
 __version__ = '0.0.0'
 
-kompile_pattern = re.compile(r"^kompile.*(\w+\.\w+)")
+kompile_pattern = re.compile(r"^kompile\s*([\-\w\d]+\.\w+)")
 command_pattern = re.compile("^(krun|kparse)")
 
 def kompile_and_run(k_def, code, k_filename):
