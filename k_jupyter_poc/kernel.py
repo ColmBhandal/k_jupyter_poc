@@ -43,7 +43,7 @@ class KKernel(Kernel):
                    allow_stdin=False):
         if re.match(command_pattern, code):
             self.maybe_send_simple_message("Running command...\n", silent)
-            message = self._run_command(code)
+            message = self._run_command(code).stdout
         elif match := re.search(kompile_pattern, code):
             self.maybe_send_simple_message("Kompiling code...\n", silent)
             k_def = "\n".join(self._k_buffer)
@@ -52,9 +52,15 @@ class KKernel(Kernel):
             k_filename = match.group(1)
             with open(os.path.join(self._workdir, k_filename), 'w') as k_file:
                 k_file.write(k_def)
-            message = self._run_command(code)
-            if(message.isspace()):
-                message = "Kompile complete"
+            result = self._run_command(code)
+            ret_code = result.returncode
+            output = result.stdout
+            if(ret_code != 0):
+                message = f"ERROR. Kompile failed. Exit code: {ret_code}"
+            else:
+                message = "Kompile complete."
+            if(not output.strip()):
+                message += "\n" + output
         else:
             self._k_buffer.append(code)
             message = 'K code fragment buffered.\n'
@@ -74,5 +80,4 @@ class KKernel(Kernel):
             self.send_response(self.iopub_socket, 'stream', stream_content)
 
     def _run_command(self, k_command):
-        output = subprocess.run(shlex.split(k_command), check=True, capture_output=True, text=True, cwd=self._workdir).stdout
-        return output
+        return subprocess.run(shlex.split(k_command), check=False, capture_output=True, text=True, cwd=self._workdir)
