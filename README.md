@@ -12,7 +12,7 @@ Since ``K`` is a meta-language, this makes Notebooks a little more complex than 
 
 ## Installation
 
-The installation assumes you have ``K`` installed and also ``python3``. Since this is a POC only, it has only been published to test PyPi. To install as a user, do:
+The installation assumes you have ``K`` installed and also ``python3``. It also assumes that you've aliased ``python3`` as ``python`` e.g. see [here](https://askubuntu.com/questions/320996/how-to-make-python-program-command-execute-python-3). Since this is a POC only, it has only been published to test PyPi. To install as a user, do:
 
 ```
 pip install --index-url https://test.pypi.org/simple/ k_jupyter_poc
@@ -28,3 +28,7 @@ pip uninstall k_jupyter_poc
 
 Note: the pakcage will be listed in ``pip`` as ``k-jupyter-poc`` (with dashes) rather than ``k_jupyter_poc`` (with underscores). 
 This doesn't seem to be an issue. More on this [here](https://github.com/ros/rosdistro/issues/18116).
+
+## Running
+
+This assumes you have jupyter installed and that the ``jupyter-notebook`` command launches a Notebook. If not install Jupyter. Then to run, just launch ``jupyter-notebook`` and choose ``K`` as your Notebook type.
