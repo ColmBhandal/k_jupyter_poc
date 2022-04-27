@@ -9,8 +9,9 @@ import shlex
 # TODO: Inject version in one place only
 __version__ = '0.0.0'
 
+kommand_pattern = re.compile(r"^(krun|kparse)")
 kompile_pattern = re.compile(r"^kompile\s*([\-\w\d]+\.\w+)")
-command_pattern = re.compile("^(krun|kparse)")
+kode_pattern = re.compile(r"^//code-file:\s*([^\s]+)\s*([\s\S]+)")
 
 class KKernel(Kernel):
 
@@ -41,7 +42,7 @@ class KKernel(Kernel):
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=False):
-        if re.match(command_pattern, code):
+        if re.match(kommand_pattern, code):
             self.maybe_send_simple_message("Running command...\n", silent)
             message = self._run_command(code).stdout
         elif match := re.search(kompile_pattern, code):
@@ -61,6 +62,8 @@ class KKernel(Kernel):
                 message = "Kompile complete."
             if(output.strip()):
                 message += "\n" + output
+        elif match := re.search(kode_pattern, code):
+            message = "Code detected!"
         else:
             self._k_buffer.append(code)
             message = 'K code fragment buffered.\n'
