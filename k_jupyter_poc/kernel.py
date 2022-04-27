@@ -59,7 +59,7 @@ class KKernel(Kernel):
                 message = f"ERROR. Kompile failed. Exit code: {ret_code}"
             else:
                 message = "Kompile complete."
-            if(not output.strip()):
+            if(output.strip()):
                 message += "\n" + output
         else:
             self._k_buffer.append(code)
@@ -80,4 +80,4 @@ class KKernel(Kernel):
             self.send_response(self.iopub_socket, 'stream', stream_content)
 
     def _run_command(self, k_command):
-        return subprocess.run(shlex.split(k_command), check=False, capture_output=True, text=True, cwd=self._workdir)
+        return subprocess.run(shlex.split(k_command), check=False, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self._workdir)
