@@ -1,8 +1,10 @@
 from ipykernel.kernelbase import Kernel
+from datetime import datetime
 import subprocess
 import re
 import tempfile
 import os
+import shlex
 
 # TODO: Inject version in one place only
 __version__ = '0.0.0'
@@ -10,19 +12,13 @@ __version__ = '0.0.0'
 kompile_pattern = re.compile(r"^kompile\s*([\-\w\d]+\.\w+)")
 command_pattern = re.compile("^(krun|kparse)")
 
-def kompile_and_run(k_def, code, k_filename):
-    with tempfile.TemporaryDirectory() as tmpdirname:
-        os.chmod(tmpdirname, 0o755) # Starts off as 700, not user readable
-        with open(k_filename, 'w') as k_file:
-            k_file.write(code)
-        kompile_output = subprocess.run(['kompile', '--version'], check=True, capture_output=True, text=True).stdout
-    return "K: " +  + "\nCode: " + code
-
 class KKernel(Kernel):
 
     def __init__(self, **kwargs):
         Kernel.__init__(self, **kwargs)
         self._k_buffer = []
+        self._workdir = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+        os.mkdir(self._workdir)
 
     implementation = 'k'
     implementation_version = __version__
@@ -46,13 +42,15 @@ class KKernel(Kernel):
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=False):
         if re.match(command_pattern, code):
+            message = self._run_command(code)
+        elif match := re.search(kompile_pattern, code):
             k_def = "\n".join(self._k_buffer)
             # We've already done the work of joining - so store the joined string in the buffer
             self._k_buffer = [k_def]
-            message = kompile_and_run(k_def, code, self._k_filename)
-        elif match := re.search(kompile_pattern, code):
-            self._k_filename = match.group(1)
-            message = f'Buffered Kompile step. K code will go to file: {self._k_filename}'
+            k_filename = match.group(1)
+            with open(os.path.join(self._workdir, k_filename), 'w') as k_file:
+                k_file.write(k_def)
+            message = self._run_command(code)
         else:
             self._k_buffer.append(code)
             message = 'K code fragment buffered.\n'
@@ -66,3 +64,7 @@ class KKernel(Kernel):
                 'payload': [],
                 'user_expressions': {},
                }
+
+    def _run_command(self, k_command):
+        output = subprocess.run(shlex.split(k_command), check=True, capture_output=True, text=True, cwd=self._workdir).stdout
+        return output
