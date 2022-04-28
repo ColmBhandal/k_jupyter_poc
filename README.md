@@ -1,5 +1,7 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ColmBhandal/k_jupyter_demo/HEAD?filepath=home/jovyan/notebooks)
 
+[Try it on binder](https://mybinder.org/v2/gh/ColmBhandal/k_jupyter_demo/HEAD?labpath=notebooks%2Flesson-02.ipynb)
+
 # k-jupyter-poc
 
 POC of a K-Kernel for IPyton that is intended to be used with Jupyter Noteboooks. As the name suggests, this is just a POC and hasn't been rigorously tested or built to feature comppletion. However, it does demonstrate that Jupyter Notebooks may be a useful way to expose the ``K`` language interactively online.
