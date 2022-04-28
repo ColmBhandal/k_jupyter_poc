@@ -1,6 +1,6 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ColmBhandal/k_jupyter_demo/HEAD?filepath=home/jovyan/notebooks)
 
-[Try it on binder](https://mybinder.org/v2/gh/ColmBhandal/k_jupyter_demo/HEAD?labpath=notebooks%2Flesson-02.ipynb)
+[Try it on binder](https://mybinder.org/v2/gh/ColmBhandal/k_jupyter_demo/HEAD?filepath=home/jovyan/notebooks)
 
 # k-jupyter-poc
 
