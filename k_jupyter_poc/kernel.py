@@ -29,7 +29,6 @@ class KKernel(Kernel):
     language_version = '0.0.0'
     banner = "K kernel.\n" \
              '''Incrementally build a K-definition via multiple k-fragments and then run these with krun.
-                All parts of your K-definition should being with the comment "//k". All other cells will be treated as sh commands.
              '''
 
     @property
