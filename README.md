@@ -1,4 +1,4 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ColmBhandal/k_jupyter_demo/HEAD?filepath=notebooks)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ColmBhandal/k_jupyter_demo/HEAD?filepath=home/jovyan/notebooks)
 
 # k-jupyter-poc
 
