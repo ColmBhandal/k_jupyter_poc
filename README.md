@@ -1,4 +1,4 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ColmBhandal/k_jupyter_demo/HEAD?filepath=home/jovyan/notebooks)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ColmBhandal/k_jupyter_demo/HEAD?filepath=home/jovyan/notebooks) [![Total alerts](https://img.shields.io/lgtm/alerts/g/ColmBhandal/k_jupyter_poc.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ColmBhandal/k_jupyter_poc/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/ColmBhandal/k_jupyter_poc.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ColmBhandal/k_jupyter_poc/context:python)
 
 [Try it on binder](https://mybinder.org/v2/gh/ColmBhandal/k_jupyter_demo/HEAD?filepath=home/jovyan/notebooks)
 
