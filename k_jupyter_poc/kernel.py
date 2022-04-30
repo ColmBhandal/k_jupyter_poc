@@ -2,7 +2,6 @@ from ipykernel.kernelbase import Kernel
 from datetime import datetime
 import subprocess
 import re
-import tempfile
 import os
 import shlex
 
