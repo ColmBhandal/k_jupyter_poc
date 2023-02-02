@@ -1,10 +1,10 @@
 install-local:
-	pip install .
+	pip3 install .
 	python3 -m k_jupyter_poc.install --user
 
 uninstall:
 	jupyter kernelspec uninstall k
-	pip uninstall k_jupyter_poc
+	pip3 uninstall k_jupyter_poc
 
 clean:
 	rm -rf build
